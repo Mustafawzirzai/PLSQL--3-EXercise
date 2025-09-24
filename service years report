@@ -1,0 +1,26 @@
+DECLARE
+    -- Cursor to fetch employee details
+    CURSOR emp_cursor IS
+        SELECT emp_id, emp_name, hire_date
+        FROM employees;
+
+    v_emp_id    employees.emp_id%TYPE;
+    v_emp_name  employees.emp_name%TYPE;
+    v_hire_date employees.hire_date%TYPE;
+    v_years     NUMBER;
+BEGIN
+    OPEN emp_cursor;
+    LOOP
+        FETCH emp_cursor INTO v_emp_id, v_emp_name, v_hire_date;
+        EXIT WHEN emp_cursor%NOTFOUND;
+
+        -- Calculate years of service
+        v_years := FLOOR(MONTHS_BETWEEN(SYSDATE, v_hire_date)/12);
+
+        DBMS_OUTPUT.PUT_LINE('Employee: ' || v_emp_name || 
+                             ', Hire Date: ' || TO_CHAR(v_hire_date, 'DD-MON-YYYY') ||
+                             ', Years of Service: ' || v_years);
+    END LOOP;
+    CLOSE emp_cursor;
+END;
+/
