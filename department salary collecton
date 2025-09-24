@@ -1,0 +1,21 @@
+DECLARE
+    -- Cursor to fetch total salary per department
+    CURSOR dept_salary_cursor IS
+        SELECT dept_id, SUM(salary) AS total_salary
+        FROM employees
+        GROUP BY dept_id;
+
+    v_dept_id      employees.dept_id%TYPE;
+    v_total_salary NUMBER;
+BEGIN
+    OPEN dept_salary_cursor;
+    LOOP
+        FETCH dept_salary_cursor INTO v_dept_id, v_total_salary;
+        EXIT WHEN dept_salary_cursor%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('Department ID: ' || v_dept_id || 
+                             ', Total Salary Paid: ' || v_total_salary);
+    END LOOP;
+    CLOSE dept_salary_cursor;
+END;
+/
