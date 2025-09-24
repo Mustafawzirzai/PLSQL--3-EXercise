@@ -1,0 +1,30 @@
+DECLARE
+    v_amount    NUMBER := 3850; -- Example withdrawal amount
+    v_500_notes NUMBER := 0;
+    v_100_notes NUMBER := 0;
+    v_50_notes  NUMBER := 0;
+BEGIN
+    -- Check if amount is valid (multiple of 50)
+    IF MOD(v_amount, 50) != 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Amount must be in multiples of 50.');
+    ELSE
+        -- Calculate 500 notes
+        v_500_notes := TRUNC(v_amount / 500);
+        v_amount    := MOD(v_amount, 500);
+
+        -- Calculate 100 notes
+        v_100_notes := TRUNC(v_amount / 100);
+        v_amount    := MOD(v_amount, 100);
+
+        -- Calculate 50 notes
+        v_50_notes := TRUNC(v_amount / 50);
+        v_amount   := MOD(v_amount, 50);
+
+        -- Display result
+        DBMS_OUTPUT.PUT_LINE('Cash Breakdown:');
+        DBMS_OUTPUT.PUT_LINE('500 notes = ' || v_500_notes);
+        DBMS_OUTPUT.PUT_LINE('100 notes = ' || v_100_notes);
+        DBMS_OUTPUT.PUT_LINE('50 notes  = ' || v_50_notes);
+    END IF;
+END;
+/
