@@ -1,0 +1,25 @@
+DECLARE
+    TYPE t_attendance IS TABLE OF CHAR(1) INDEX BY PLS_INTEGER;
+    v_attendance t_attendance;
+    v_days      NUMBER := 30;
+BEGIN
+    -- Example attendance input: 1 = Present, 0 = Absent
+    -- You can modify this array as per actual attendance
+    FOR i IN 1 .. v_days LOOP
+        IF MOD(i, 3) = 0 THEN
+            v_attendance(i) := 'A'; -- Mark absent for every 3rd day
+        ELSE
+            v_attendance(i) := 'P'; -- Present otherwise
+        END IF;
+    END LOOP;
+
+    -- Print attendance
+    FOR i IN 1 .. v_days LOOP
+        DBMS_OUTPUT.PUT_LINE('Day ' || i || ': ' ||
+                             CASE v_attendance(i)
+                                  WHEN 'P' THEN 'Present'
+                                  ELSE 'Absent'
+                             END);
+    END LOOP;
+END;
+/
