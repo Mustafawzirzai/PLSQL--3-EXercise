@@ -1,0 +1,29 @@
+DECLARE
+    -- Cursor to select low-stock products
+    CURSOR low_stock_cursor IS
+        SELECT product_id, product_name, stock
+        FROM products
+        WHERE stock < 10
+        FOR UPDATE OF status;  -- Needed to update rows via cursor
+
+    v_product_id   products.product_id%TYPE;
+    v_product_name products.product_name%TYPE;
+BEGIN
+    OPEN low_stock_cursor;
+    LOOP
+        FETCH low_stock_cursor INTO v_product_id, v_product_name;
+        EXIT WHEN low_stock_cursor%NOTFOUND;
+
+        -- Update status to 'Reorder Needed'
+        UPDATE products
+        SET status = 'Reorder Needed'
+        WHERE CURRENT OF low_stock_cursor;
+
+        DBMS_OUTPUT.PUT_LINE('Product: ' || v_product_name || 
+                             ' (ID: ' || v_product_id || ') marked as Reorder Needed');
+    END LOOP;
+    CLOSE low_stock_cursor;
+
+    COMMIT;
+END;
+/
