@@ -1,0 +1,15 @@
+DECLARE
+    v_start_seat  NUMBER := 21;  -- starting seat number
+    v_num_seats   NUMBER := 10;  -- number of seats booked
+    v_end_seat    NUMBER;
+BEGIN
+    v_end_seat := v_start_seat + v_num_seats - 1;
+
+    DBMS_OUTPUT.PUT_LINE('Seats booked:');
+
+    -- print seat numbers using FOR loop
+    FOR i IN v_start_seat .. v_end_seat LOOP
+        DBMS_OUTPUT.PUT_LINE('Seat ' || i);
+    END LOOP;
+END;
+/
