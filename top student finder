@@ -1,0 +1,32 @@
+DECLARE
+    -- Cursor to get distinct class IDs
+    CURSOR class_cursor IS
+        SELECT DISTINCT class_id
+        FROM students;
+
+    v_class_id   students.class_id%TYPE;
+
+    -- Cursor to get the top student in a class
+    CURSOR top_student_cursor(p_class_id students.class_id%TYPE) IS
+        SELECT student_name, gpa
+        FROM students
+        WHERE class_id = p_class_id
+        ORDER BY gpa DESC
+        FETCH FIRST 1 ROWS ONLY;
+
+    v_student_name students.student_name%TYPE;
+    v_gpa          students.gpa%TYPE;
+BEGIN
+    FOR class_rec IN class_cursor LOOP
+        v_class_id := class_rec.class_id;
+
+        OPEN top_student_cursor(v_class_id);
+        FETCH top_student_cursor INTO v_student_name, v_gpa;
+        CLOSE top_student_cursor;
+
+        DBMS_OUTPUT.PUT_LINE('Class ' || v_class_id || 
+                             ': Top Student = ' || v_student_name || 
+                             ', GPA = ' || v_gpa);
+    END LOOP;
+END;
+/
