@@ -1,0 +1,22 @@
+DECLARE
+    v_cust_id   NUMBER := 101;   -- Example customer ID
+    v_units     NUMBER := 350;   -- Example units consumed
+    v_bill      NUMBER := 0;
+    i           NUMBER := 1;
+BEGIN
+    WHILE i <= v_units LOOP
+        IF i <= 100 THEN
+            v_bill := v_bill + 3;  -- First 100 units → 3 AFN
+        ELSIF i <= 300 THEN
+            v_bill := v_bill + 5;  -- Next 200 units → 5 AFN
+        ELSE
+            v_bill := v_bill + 7;  -- Above 300 units → 7 AFN
+        END IF;
+        i := i + 1;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Customer ' || v_cust_id || 
+                         ' consumed ' || v_units || ' units.');
+    DBMS_OUTPUT.PUT_LINE('Total Bill = ' || v_bill || ' AFN');
+END;
+/
