@@ -1,0 +1,24 @@
+DECLARE
+    v_price   NUMBER;
+    v_total   NUMBER := 0;
+    i         NUMBER := 1;
+BEGIN
+    -- Loop for 5 items
+    WHILE i <= 5 LOOP
+        -- Simulate user input (for example purposes we assign values)
+        -- In real systems, these could come from a table or input
+        v_price := i * 100;  -- Example: item prices = 100, 200, 300, 400, 500
+
+        DBMS_OUTPUT.PUT_LINE('Item ' || i || ' price = ' || v_price);
+
+        -- Add price to total
+        v_total := v_total + v_price;
+
+        -- Increment counter
+        i := i + 1;
+    END LOOP;
+
+    -- Display final total
+    DBMS_OUTPUT.PUT_LINE('Final Total Bill = ' || v_total);
+END;
+/
