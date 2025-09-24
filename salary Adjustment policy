@@ -1,0 +1,32 @@
+DECLARE
+    v_emp_id     employees.emp_id%TYPE := 101; -- Example employee ID
+    v_salary     employees.salary%TYPE;
+    v_new_salary employees.salary%TYPE;
+BEGIN
+    -- Fetch current salary of the employee
+    SELECT salary 
+    INTO v_salary
+    FROM employees
+    WHERE emp_id = v_emp_id;
+
+    -- Apply increment rules
+    IF v_salary < 30000 THEN
+        v_new_salary := v_salary * 1.15;
+    ELSIF v_salary BETWEEN 30000 AND 50000 THEN
+        v_new_salary := v_salary * 1.10;
+    ELSE
+        v_new_salary := v_salary * 1.05;
+    END IF;
+
+    -- Update salary in the table
+    UPDATE employees
+    SET salary = v_new_salary
+    WHERE emp_id = v_emp_id;
+
+    DBMS_OUTPUT.PUT_LINE('Employee ' || v_emp_id || 
+                         ' salary updated from ' || v_salary || 
+                         ' to ' || v_new_salary);
+
+    COMMIT;
+END;
+/
