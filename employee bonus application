@@ -1,0 +1,32 @@
+DECLARE
+    v_emp_id    employees.emp_id%TYPE := 101; -- Example employee ID
+    v_hire_date employees.hire_date%TYPE;
+    v_years     NUMBER;
+    v_bonus     NUMBER;
+BEGIN
+    -- Fetch hire date
+    SELECT hire_date
+    INTO v_hire_date
+    FROM employees
+    WHERE emp_id = v_emp_id;
+
+    -- Calculate years of service
+    v_years := FLOOR(MONTHS_BETWEEN(SYSDATE, v_hire_date) / 12);
+
+    -- Apply bonus rules
+    IF v_years > 5 THEN
+        v_bonus := 5000;
+    ELSE
+        v_bonus := 2000;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Employee ' || v_emp_id || 
+                         ' has ' || v_years || ' years of service. Bonus = ' || v_bonus);
+
+    -- (Optional) update bonus in employees table if column exists
+    -- UPDATE employees
+    -- SET bonus = v_bonus
+    -- WHERE emp_id = v_emp_id;
+    -- COMMIT;
+END;
+/
