@@ -1,0 +1,25 @@
+DECLARE
+    v_current_month DATE := TRUNC(SYSDATE, 'MM'); -- First day of current month
+
+    -- Cursor to fetch tenants who haven't paid rent this month
+    CURSOR unpaid_tenants_cursor IS
+        SELECT tenant_id, tenant_name
+        FROM tenants
+        WHERE rent_paid = 'N'
+          AND TRUNC(rent_month, 'MM') = v_current_month;
+
+    v_tenant_id   tenants.tenant_id%TYPE;
+    v_tenant_name tenants.tenant_name%TYPE;
+BEGIN
+    OPEN unpaid_tenants_cursor;
+    LOOP
+        FETCH unpaid_tenants_cursor INTO v_tenant_id, v_tenant_name;
+        EXIT WHEN unpaid_tenants_cursor%NOTFOUND;
+
+        -- Print reminder (in real scenario, could integrate email/SMS)
+        DBMS_OUTPUT.PUT_LINE('Reminder: Tenant ' || v_tenant_name || 
+                             ' (ID: ' || v_tenant_id || ') has not paid rent for this month.');
+    END LOOP;
+    CLOSE unpaid_tenants_cursor;
+END;
+/
