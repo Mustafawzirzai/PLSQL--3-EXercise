@@ -1,0 +1,19 @@
+DECLARE
+    v_cust_id    customers.cust_id%TYPE := 201; -- Example customer ID
+    v_salary     customers.salary%TYPE;
+    v_age        customers.age%TYPE;
+BEGIN
+    -- Fetch customer salary and age
+    SELECT salary, age
+    INTO v_salary, v_age
+    FROM customers
+    WHERE cust_id = v_cust_id;
+
+    -- Check eligibility
+    IF v_salary > 40000 AND v_age < 60 THEN
+        DBMS_OUTPUT.PUT_LINE('Eligible for Loan');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Not Eligible');
+    END IF;
+END;
+/
