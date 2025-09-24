@@ -1,0 +1,22 @@
+DECLARE
+
+    CURSOR sales_cursor IS
+        SELECT emp_id, emp_name, salary
+        FROM employees
+        WHERE job_title = 'Salesman'
+        FOR UPDATE OF salary;
+BEGIN
+
+    FOR rec IN sales_cursor LOOP
+
+        UPDATE employees
+        SET salary = salary + 2000
+        WHERE CURRENT OF sales_cursor;
+
+        DBMS_OUTPUT.PUT_LINE('Salary updated for ' || rec.emp_name ||
+                             ': New Salary = ' || (rec.salary + 2000));
+    END LOOP;
+
+    COMMIT;
+END;
+/
