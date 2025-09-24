@@ -1,0 +1,24 @@
+DECLARE
+    -- Cursor to select customers with unpaid bills > 5000
+    CURSOR unpaid_cursor IS
+        SELECT customer_id, customer_name, bill_amount
+        FROM orders
+        WHERE paid_status = 'N'
+          AND bill_amount > 5000;
+
+    v_customer_id   orders.customer_id%TYPE;
+    v_customer_name orders.customer_name%TYPE;
+    v_bill_amount   orders.bill_amount%TYPE;
+BEGIN
+    OPEN unpaid_cursor;
+    LOOP
+        FETCH unpaid_cursor INTO v_customer_id, v_customer_name, v_bill_amount;
+        EXIT WHEN unpaid_cursor%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || v_customer_id ||
+                             ', Name: ' || v_customer_name ||
+                             ', Unpaid Bill: ' || v_bill_amount);
+    END LOOP;
+    CLOSE unpaid_cursor;
+END;
+/
